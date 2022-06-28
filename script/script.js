@@ -21,7 +21,7 @@ function createTask(){
     removeTask();
 } 
 
-btnAddTask.onclick = createTask;
+//btnAddTask.onclick = createTask;
 
 
 
@@ -34,3 +34,52 @@ function removeTask(){
 }
 
 removeTask();
+
+//////
+
+const getTodos = () => {
+    fetch('https://todo-app73026503.herokuapp.com/api/post?id=1').then(res => res.json()).then(
+        data =>{
+            console.log(data)
+            ulList.innerHTML = '';
+            data.forEach(item => {
+                ulList.innerHTML += `
+                    <li>${item.content} <span>Delete</span></li>
+                `
+            })
+        } 
+    )
+}
+
+getTodos();
+
+const postTodo = () => {
+    var inputValue = inputData.value;
+    //inputData.value = '';
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(
+            {
+                "title": "test",
+                "content": inputValue,
+                "user_id": 1
+            }
+        )
+    }
+
+    fetch('https://todo-app73026503.herokuapp.com/api/post', options).then(
+        res => res.json() 
+    ).then(
+        data => {
+            console.log('SEND DATA', data);
+        }
+    )
+}
+
+btnAddTask.addEventListener('click', postTodo);
+btnAddTask.addEventListener('click', createTask);
+
+
